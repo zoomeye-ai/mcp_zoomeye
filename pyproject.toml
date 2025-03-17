@@ -5,7 +5,7 @@ description = "A Model Context Protocol server providing tools for ZoomEye queri
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "zoomeye", email = "support@zoomeye.ai" },
+    { name = "zoomeye team", email = "support@zoomeye.ai" },
 ]
 keywords = ["zoomeye", "mcp", "llm"]
 license = { text = "MIT" }

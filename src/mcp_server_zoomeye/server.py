@@ -1,24 +1,13 @@
 import os
-import time
-import logging
 from enum import Enum
 import json
 import requests
-from typing import Dict, List, Optional, Sequence, Any
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+from typing import Dict, List, Optional, Sequence
+
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
 from mcp.shared.exceptions import McpError
-
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('mcp_server_zoomeye')
-
 
 class ZoomeyeTools(str, Enum):
     ZOOMEYE_SEARCH = "zoomeye_search"
@@ -31,11 +20,11 @@ def zoomeye_search(qbase64: str, page: int = 1, pagesize: int = 10, fields: str 
     | ----- | ----- | ----- | ----- |
     |qbase64|string|true|Base64 encoded query string. For more, refer to Related references.|
     |fields|string|false|The fields to return, separated by commas. Default: ip, port, domain, update_time. For more, refer to Response field description|
-    |sub_type|string|false|Data type, supports v4, v6, and web. Default is v4.|
+    |sub\_type|string|false|Data type, supports v4, v6, and web. Default is v4.|
     |page|integer|false|View asset page number|
     |pagesize|integer|false|Number of records per page, default is 10, maximum is 10,000.|
     |facets|string|false|Statistical items, separated by commas if there are multiple. Supports country, subdivisions, city, product, service, device, OS, and port.|
-    |ignore_cache|boolean|false|Whether to ignore the cache. false, supported by Business plan and above.|
+    |ignore\_cache|boolean|false|Whether to ignore the cache. false, supported by Business plan and above.|
     """
     service = ZoomeyeService()
     return service.query(
@@ -49,30 +38,11 @@ def zoomeye_search(qbase64: str, page: int = 1, pagesize: int = 10, fields: str 
     )
 
 
-from mcp_server_zoomeye.cache import ZoomeyeCache
-
 class ZoomeyeService:
-    def __init__(self, key: Optional[str] = None, cache_ttl: int = 300):
-        """Initialize the ZoomEye service.
-        
-        Args:
-            key (Optional[str], optional): ZoomEye API key. Defaults to None.
-            cache_ttl (int, optional): Cache time-to-live in seconds. Defaults to 300 (5 minutes).
-        """
+    def __init__(self, key: Optional[str] = None):
         self.key = key
         if not self.key:
             self.key = os.getenv("ZOOMEYE_API_KEY")
-        
-        self.cache = ZoomeyeCache(ttl=cache_ttl)
-        self.session = requests.Session()
-        retry_strategy = Retry(
-            total=3, 
-            backoff_factor=1, 
-            status_forcelist=[429, 500, 502, 503, 504], 
-            allowed_methods=["POST"]
-        )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        self.session.mount("https://", adapter)
     
     def query(self, qbase64, page=1, pagesize=10, fields=None, sub_type=None, facets=None, ignore_cache=None):
         """Query ZoomEye API with the given parameters.
@@ -93,22 +63,7 @@ class ZoomeyeService:
             ValueError: If API key is not provided or API request fails.
         """
         if not self.key:
-            logger.error("ZoomEye API key is missing")
             raise ValueError("ZoomEye API key is required. Please set it via environment variable ZOOMEYE_API_KEY or pass it to the constructor.")
-        
-        if not ignore_cache:
-            cache_key = self.cache.get_cache_key(
-                qbase64=qbase64,
-                page=page,
-                pagesize=pagesize,
-                fields=fields,
-                sub_type=sub_type,
-                facets=facets
-            )
-            cached_result = self.cache.get(cache_key)
-            if cached_result:
-                logger.info(f"Cache hit for query: {qbase64[:30]}...")
-                return cached_result
         
         url = "https://api.zoomeye.ai/v2/search"
         headers = {"API-KEY": self.key, "Content-Type": "application/json"}
@@ -126,40 +81,16 @@ class ZoomeyeService:
         if ignore_cache is not None:
             data["ignore_cache"] = ignore_cache
         
-        logger.info(f"Sending request to ZoomEye API: {qbase64[:30]}...")
-        start_time = time.time()
-        
         try:
-            response = self.session.post(url, headers=headers, json=data, timeout=30)
+            response = requests.post(url, headers=headers, json=data)
             response.raise_for_status()  # Raise exception for HTTP errors
             
-            result = response.json()
-            elapsed_time = time.time() - start_time
-            logger.info(f"ZoomEye API request completed in {elapsed_time:.2f}s")
-            
-            if not ignore_cache:
-                cache_key = self.cache.get_cache_key(
-                    qbase64=qbase64,
-                    page=page,
-                    pagesize=pagesize,
-                    fields=fields,
-                    sub_type=sub_type,
-                    facets=facets
-                )
-                self.cache.set(cache_key, result)
-                logger.info(f"Cached result for query: {qbase64[:30]}...")
-            
-            return result
+            return response.json()
         except requests.exceptions.RequestException as e:
-            elapsed_time = time.time() - start_time
-            logger.error(f"Error querying ZoomEye API after {elapsed_time:.2f}s: {str(e)}")
             raise ValueError(f"Error querying ZoomEye API: {str(e)}")
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON response from ZoomEye API: {str(e)}")
+        except json.JSONDecodeError:
             raise ValueError("Invalid JSON response from ZoomEye API")
-        except Exception as e:
-            logger.error(f"Unexpected error during ZoomEye API request: {str(e)}")
-            raise ValueError(f"Unexpected error during ZoomEye API request: {str(e)}")
+
 
 
 async def serve(key: str | None = None) -> None:
@@ -225,14 +156,14 @@ async def serve(key: str | None = None) -> None:
                     qbase64 = arguments.get("qbase64")
                     if not qbase64:
                         raise ValueError("Missing required argument: qbase64")
-                    
+
                     page = arguments.get("page", 1)
                     pagesize = arguments.get("pagesize", 10)
                     fields = arguments.get("fields")
                     sub_type = arguments.get("sub_type")
                     facets = arguments.get("facets")
                     ignore_cache = arguments.get("ignore_cache")
-                    
+
                     result = zoomeye_service.query(
                         qbase64=qbase64,
                         page=page,
@@ -256,6 +187,7 @@ async def serve(key: str | None = None) -> None:
     options = server.create_initialization_options()
     async with stdio_server() as (read_stream, write_stream):
         await server.run(read_stream, write_stream, options)
+
 
 
 if __name__ == "__main__":
