@@ -92,11 +92,6 @@ brew install uv
 
 No specific installation is required when using [`uvx`](https://docs.astral.sh/uv/guides/tools/), which allows you to run Python packages directly:
 
-```bash
-# Run mcp-server-zoomeye directly
-uvx mcp-server-zoomeye
-```
-
 #### Installing with uv
 
 Alternatively, you can install the package using uv:
