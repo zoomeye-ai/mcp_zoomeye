@@ -4,10 +4,13 @@ import json
 import requests
 from typing import Dict, List, Optional, Sequence
 
+from dotenv import load_dotenv
+
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
 from mcp.shared.exceptions import McpError
+load_dotenv()
 
 class ZoomeyeTools(str, Enum):
     ZOOMEYE_SEARCH = "zoomeye_search"

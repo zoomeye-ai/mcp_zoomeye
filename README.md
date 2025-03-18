@@ -24,10 +24,6 @@ A Model Context Protocol server that provides network asset information based on
 
 ## Installation
 
-### Using uv (Recommended)
-
-No specific installation is required when using [`uv`](https://docs.astral.sh/uv/). We will use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-zoomeye*.
-
 ### Using PIP
 
 Alternatively, you can install `mcp-server-zoomeye` via pip:
@@ -41,6 +37,79 @@ After installation, you can run it as a script using the following command:
 ```bash
 python -m mcp_server_zoomeye
 ```
+
+### Using Docker
+
+You can also run the ZoomEye MCP server using Docker:
+
+#### Pull from Docker Hub
+
+```bash
+# Pull the latest image
+docker pull zoomeyeteam/mcp-server-zoomeye:latest
+
+# Run the container with your API key
+docker run -i --rm -e ZOOMEYE_API_KEY=your_api_key_here zoomeyeteam/mcp-server-zoomeye:latest
+```
+
+> **Note**: We provide multi-architecture Docker images that support `linux/amd64` and `linux/arm64` platforms and can run on Intel/AMD and ARM (such as Apple Silicon) processors.
+
+#### Build from Source
+
+Alternatively, you can build the Docker image from source:
+
+```bash
+# Clone the repository
+git clone https://github.com/zoomeye-ai/mcp_zoomeye.git
+cd mcp_zoomeye
+
+# Build the Docker image
+docker build -t zoomeyeteam/mcp-server-zoomeye:local .
+
+# Run the container
+docker run -i --rm -e ZOOMEYE_API_KEY=your_api_key_here zoomeyeteam/mcp-server-zoomeye:local
+
+```
+
+### Using uv
+
+[`uv`](https://docs.astral.sh/uv/) is a fast Python package installer and resolver written in Rust. It's a modern alternative to pip that offers significant performance improvements.
+
+#### Installation of uv
+
+```bash
+# Install uv using curl (macOS/Linux)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Or using PowerShell (Windows)
+irm https://astral.sh/uv/install.ps1 | iex
+
+# Or using Homebrew (macOS)
+brew install uv
+```
+
+#### Using uvx to run mcp-server-zoomeye
+
+No specific installation is required when using [`uvx`](https://docs.astral.sh/uv/guides/tools/), which allows you to run Python packages directly:
+
+```bash
+# Run mcp-server-zoomeye directly
+uvx mcp-server-zoomeye
+```
+
+#### Installing with uv
+
+Alternatively, you can install the package using uv:
+
+```bash
+# Install in the current environment
+uv pip install mcp-server-zoomeye
+
+# Or create and install in a new virtual environment
+uv venv
+uv pip install mcp-server-zoomeye
+```
+
 
 ## Configuration
 
@@ -71,7 +140,7 @@ Add the following in Claude settings:
 "mcpServers": {
   "zoomeye": {
     "command": "docker",
-    "args": ["run", "-i", "--rm", "-e", "ZOOMEYE_API_KEY=your_api_key_here", "mcp/zoomeye"],
+    "args": ["run", "-i", "--rm", "-e", "ZOOMEYE_API_KEY=your_api_key_here", "zoomeyeteam/mcp-server-zoomeye:latest"],
     "env": {
       "ZOOMEYE_API_KEY": "your_api_key_here"
     }
