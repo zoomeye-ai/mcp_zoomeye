@@ -290,14 +290,6 @@ cd path/to/servers/src/mcp_server_zoomeye
 npx @modelcontextprotocol/inspector uv run mcp-server-zoomeye
 ```
 
-## Building
-
-Docker Build:
-
-```bash
-docker build -t mcp/zoomeye .
-```
-
 ## Contributing
 
 We encourage contributions to mcp-server-zoomeye to help expand and improve its functionality. Whether it's adding new related tools, enhancing existing features, or improving documentation, your input is valuable.
