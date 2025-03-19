@@ -1,15 +1,16 @@
+import json
 import os
 from enum import Enum
-import json
+from typing import Optional, Sequence
+
 import requests
-from typing import Dict, List, Optional, Sequence
-
 from dotenv import load_dotenv
-
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
-from mcp.shared.exceptions import McpError
+from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource, Prompt, PromptArgument
+
+from .prompts import SEARCH_SYNTAX_GUIDE
+
 load_dotenv()
 
 class ZoomeyeTools(str, Enum):
@@ -106,7 +107,7 @@ async def serve(key: str | None = None) -> None:
         return [
             Tool(
                 name=ZoomeyeTools.ZOOMEYE_SEARCH,
-                description="Get network asset information based on query conditions.",
+                description=SEARCH_SYNTAX_GUIDE,
                 inputSchema={
                     "type": "object",
                     "properties": {

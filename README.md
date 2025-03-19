@@ -1,6 +1,9 @@
 # ZoomEye MCP Server
 
-A Model Context Protocol server that provides network asset information based on query conditions. This server allows LLMs to obtain network asset information and supports querying network asset information by zoomeye dork etc.
+A Model Context Protocol (MCP) server that provides network asset information based on query conditions. This server allows Large Language Models (LLMs) to obtain network asset information by querying ZoomEye using dorks and other search parameters.
+
+This MCP server integrates with AI assistants and development environments like Claude Desktop, Cursor, Windsurf, Cline, Continue, and Zed, enabling them to search for and analyze internet-connected devices, services, and vulnerabilities through natural language interactions.
+
 
 ## Features
 
@@ -21,6 +24,47 @@ A Model Context Protocol server that provides network asset information based on
     - `sub_type` (string): Data type, supports v4, v6, and web. Default is v4
     - `facets` (string): Statistical items, separated by commas if there are multiple
     - `ignore_cache` (boolean): Whether to ignore the cache
+
+## Usage Guide
+
+### Basic Usage
+
+Once the server is running, you can interact with it through your AI assistant or development environment. Here's how to use it:
+
+1. **Start the server** using one of the installation methods above
+2. **Configure your AI assistant** (Claude Desktop, Cursor, Windsurf, Cline, Continue, Zed, etc.) to use the server
+3. **Query network information** using natural language
+
+![searchexample](example.png)
+
+### Search Syntax Guide
+
+- Search Scope covers devices (IPv4, IPv6) and websites (domains).
+- When entering a search string, the system will match keywords in "global" mode, including content from various
+  protocols such as HTTP, SSH, FTP, etc. (e.g., HTTP/HTTPS protocol headers, body, SSL, title, and other protocol
+  banners).
+- Search strings are case-insensitive and will be segmented for matching (the search results page provides a "
+  segmentation" test feature). When using == for search, it enforces exact case-sensitive matching with strict syntax.
+- Please use quotes for search strings (e.g., "Cisco System" or 'Cisco System'). If the search string contains quotes,
+  use the escape character, e.g.,"a\"b". If the search string contains parentheses, use the escape character, e.g.,
+  portinfo\(\).
+
+You can see more detailed search syntax rules in [prompts.py](./src/mcp_server_zoomeye/prompts.py).
+
+For more information on the ZoomEye Search API, refer to the [ZoomEye API v2 documentation](https://www.zoomeye.ai/doc).
+
+## Getting Started
+
+### Prerequisites
+
+1. **ZoomEye API Key**
+   - Register for an account at [ZoomEye](https://www.zoomeye.org/)
+   - Obtain your API key from your account settings
+   - The API key will be used to authenticate your requests to the ZoomEye API
+
+2. **Python Environment**
+   - Python 3.10 or higher is required
+   - Alternatively, you can use Docker to run the server without installing Python
 
 ## Installation
 
@@ -107,6 +151,24 @@ uv pip install mcp-server-zoomeye
 
 
 ## Configuration
+
+### Environment Variables
+
+The ZoomEye MCP server requires the following environment variable:
+
+- `ZOOMEYE_API_KEY`: Your ZoomEye API key for authentication
+
+You can set this environment variable in several ways:
+
+1. **Export in your shell session**:
+   ```bash
+   export ZOOMEYE_API_KEY="your_api_key_here"
+   ```
+
+2. **Pass directly when running the container** (for Docker):
+   ```bash
+   docker run -i --rm -e ZOOMEYE_API_KEY=your_api_key_here zoomeyeteam/mcp-server-zoomeye:latest
+   ```
 
 ### Configure Claude.app
 
@@ -196,16 +258,10 @@ Add the following in Zed's settings.json:
 ```
 </details>
 
-## API Documentation
 
-### ZoomEye Search API
+## Example Interactions
 
-The ZoomEye Search API allows you to search for network assets using ZoomEye dorks. The API endpoint is `https://api.zoomeye.ai/v2/search`.
-
-
-## Example Interaction
-
-1. Retrieve global Apache Tomcat assets:
+### Example 1: Retrieve global Apache Tomcat assets
 ```json
 {
   "name": "zoomeye_search",
@@ -270,19 +326,76 @@ Response:
 }
 ```
 
-## Debugging
+## Debugging and Troubleshooting
 
-You can use the MCP inspector to debug the server. For uvx installation:
+### Using MCP Inspector
+
+The Model Context Protocol Inspector is a tool that helps debug MCP servers by simulating client interactions. You can use it to test your ZoomEye MCP server:
 
 ```bash
+# For uvx installation
 npx @modelcontextprotocol/inspector uvx mcp-server-zoomeye
-```
 
-Or if you have installed the package in a specific directory or are developing:
-
-```bash
+# If developing locally
 cd path/to/servers/src/mcp_server_zoomeye
 npx @modelcontextprotocol/inspector uv run mcp-server-zoomeye
+```
+
+### Common Issues
+
+1. **Authentication Errors**
+   - Ensure your ZoomEye API key is correct and properly set as an environment variable
+   - Check that your API key has not expired or been revoked
+
+2. **Connection Issues**
+   - Verify your internet connection
+   - Check if the ZoomEye API is experiencing downtime
+
+3. **No Results**
+   - Your query might be too specific or contain syntax errors
+   - Try simplifying your query or using different search terms
+
+4. **Rate Limiting**
+   - ZoomEye API has rate limits based on your account type
+   - Space out your requests or upgrade your account for higher limits
+
+## Advanced Usage
+
+### Caching
+
+The ZoomEye MCP server implements caching to improve performance and reduce API calls:
+
+- Responses are cached based on the query parameters
+- Cache duration is configurable (default: 1 hour)
+- You can bypass the cache by setting `ignore_cache` to `true` in your query
+
+### Custom Fields
+
+You can request specific fields in your query results by using the `fields` parameter:
+
+```json
+{
+  "name": "zoomeye_search",
+  "arguments": {
+    "qbase64": "app=\"Apache\"",
+    "fields": "ip,port,domain,service,os,country,city"
+  }
+}
+```
+
+### Pagination
+
+For queries that return many results, you can paginate through them:
+
+```json
+{
+  "name": "zoomeye_search",
+  "arguments": {
+    "qbase64": "app=\"Apache\"",
+    "page": 2,
+    "pagesize": 20
+  }
+}
 ```
 
 ## Contributing
@@ -297,4 +410,3 @@ Pull requests are welcome! Feel free to contribute new ideas, bug fixes, or enha
 ## License
 
 mcp-server-zoomeye is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more information, see the LICENSE file in the project repository.
-```
