@@ -58,7 +58,7 @@ For more information on the ZoomEye Search API, refer to the [ZoomEye API v2 doc
 ### Prerequisites
 
 1. **ZoomEye API Key**
-   - Register for an account at [ZoomEye](https://www.zoomeye.org/)
+   - Register for an account at [ZoomEye](https://www.zoomeye.ai/)
    - Obtain your API key from your account settings
    - The API key will be used to authenticate your requests to the ZoomEye API
 
