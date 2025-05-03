@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/zoomeye-ai-mcp-zoomeye-badge.png)](https://mseep.ai/app/zoomeye-ai-mcp-zoomeye)
+
 # ZoomEye MCP Server
 
 A Model Context Protocol (MCP) server that provides network asset information based on query conditions. This server allows Large Language Models (LLMs) to obtain network asset information by querying ZoomEye using dorks and other search parameters.
