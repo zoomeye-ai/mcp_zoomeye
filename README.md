@@ -6,7 +6,7 @@ A Model Context Protocol (MCP) server that provides network asset information ba
 
 🎉 We are excited to announce the official open-source release of **ZoomEye MCP Server** — a powerful Model Context Protocol (MCP) server that brings real-time cyber asset intelligence to AI assistants and development environments.
 
-**Special Offer:** Follow our official Twitter account @zoomeye_team to receive a **7-day membership** and experience our MCP service.. After following, Then just DM us, and our team will your membership access.
+**Special Offer:** Follow our official Twitter account [@zoomeye_team](https://x.com/zoomeye_team) to receive a **7-day membership** and experience our MCP service. After following, Then just DM us, and our team will your membership access.
 
 💡 Provide insightful feedback that gets officially adopted, and you'll unlock **even more exclusive rewards**!
 
