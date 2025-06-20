@@ -6,9 +6,20 @@ A Model Context Protocol (MCP) server that provides network asset information ba
 
 🎉 We are excited to announce the official open-source release of **ZoomEye MCP Server** — a powerful Model Context Protocol (MCP) server that brings real-time cyber asset intelligence to AI assistants and development environments.
 
-**Special Offer:** Follow our official Twitter account [@zoomeye_team](https://x.com/zoomeye_team) to receive a **7-day membership** and experience our MCP service. After following, Then just DM us, and our team will your membership access.
+🚀 Free Trial: 7-Day FREE Access to ZoomEye MCP!
+Experience ZoomEye MCP — the AI-powered cyberspace asset search engine — absolutely free for 7 days!
 
-💡 Provide insightful feedback that gets officially adopted, and you'll unlock **even more exclusive rewards**!
+🔍 Search global internet assets, track real-time changes, and unlock AI-driven insights — all in one place.
+
+👉 How to claim:
+
+1. Follow us on Twitter: [@zoomeye_team](https://x.com/zoomeye_team)
+2. DM us "MCP" and your MCP setup screenshot
+3. Get instant access to your 7-day membership
+
+🎁 Limited-time free trial — explore the power of AI asset search today!
+
+💡 Provide insightful feedback that gets officially adopted, and you'll unlock **even more rewards**!
 
 🔧 Fully compatible with leading MCP environments:
 
@@ -18,6 +29,8 @@ A Model Context Protocol (MCP) server that provides network asset information ba
 - Cline
 - Continue
 - Zed
+- Cherry Studio
+- Chatbox
 
 🔗 Explore ZoomEye MCP Server on:
 
@@ -35,23 +48,16 @@ We welcome everyone to use, explore, and contribute!
 To use this MCP server, you’ll need a ZoomEye API key.
 
 1. Go to https://www.zoomeye.ai
-
 2. Register or log in
-
 3. Click your avatar → **Profile**
-
 4. Copy your **API-KEY**
-
 5. Set the environment variable:
-
+   
    `export ZOOMEYE_API_KEY="your_api_key_here"`
 
 ![zoomeye1](./zoomeye1.jpg)
 
 ![zoomeye2](./zoomeye2.jpg)
-
-
-
 
 ## Features
 
@@ -106,11 +112,12 @@ For more information on the ZoomEye Search API, refer to the [ZoomEye API v2 doc
 ### Prerequisites
 
 1. **ZoomEye API Key**
+   
    - Register for an account at [ZoomEye](https://www.zoomeye.ai/)
    - Obtain your API key from your account settings
    - The API key will be used to authenticate your requests to the ZoomEye API
-
 2. **Python Environment**
+   
    - Python 3.10 or higher is required
    - Alternatively, you can use Docker to run the server without installing Python
 
@@ -160,7 +167,6 @@ docker build -t zoomeyeteam/mcp-server-zoomeye:local .
 
 # Run the container
 docker run -i --rm -e ZOOMEYE_API_KEY=your_api_key_here zoomeyeteam/mcp-server-zoomeye:local
-
 ```
 
 ### Using uv
@@ -197,7 +203,6 @@ uv venv
 uv pip install mcp-server-zoomeye
 ```
 
-
 ## Configuration
 
 ### Environment Variables
@@ -209,11 +214,12 @@ The ZoomEye MCP server requires the following environment variable:
 You can set this environment variable in several ways:
 
 1. **Export in your shell session**:
+   
    ```bash
    export ZOOMEYE_API_KEY="your_api_key_here"
    ```
-
 2. **Pass directly when running the container** (for Docker):
+   
    ```bash
    docker run -i --rm -e ZOOMEYE_API_KEY=your_api_key_here zoomeyeteam/mcp-server-zoomeye:latest
    ```
@@ -236,6 +242,7 @@ Add the following in Claude settings:
   }
 }
 ```
+
 </details>
 
 <details>
@@ -252,6 +259,7 @@ Add the following in Claude settings:
   }
 }
 ```
+
 </details>
 
 <details>
@@ -268,6 +276,7 @@ Add the following in Claude settings:
   }
 }
 ```
+
 </details>
 
 ### Configure Zed
@@ -288,6 +297,7 @@ Add the following in Zed's settings.json:
   }
 ],
 ```
+
 </details>
 
 <details>
@@ -304,12 +314,13 @@ Add the following in Zed's settings.json:
   }
 },
 ```
-</details>
 
+</details>
 
 ## Example Interactions
 
 ### Example 1: Retrieve global Apache Tomcat assets
+
 ```json
 {
   "name": "zoomeye_search",
@@ -318,7 +329,9 @@ Add the following in Zed's settings.json:
   }
 }
 ```
+
 Response:
+
 ```json
 {
   "code": 60000,
@@ -392,18 +405,19 @@ npx @modelcontextprotocol/inspector uv run mcp-server-zoomeye
 ### Common Issues
 
 1. **Authentication Errors**
+   
    - Ensure your ZoomEye API key is correct and properly set as an environment variable
    - Check that your API key has not expired or been revoked
-
 2. **Connection Issues**
+   
    - Verify your internet connection
    - Check if the ZoomEye API is experiencing downtime
-
 3. **No Results**
+   
    - Your query might be too specific or contain syntax errors
    - Try simplifying your query or using different search terms
-
 4. **Rate Limiting**
+   
    - ZoomEye API has rate limits based on your account type
    - Space out your requests or upgrade your account for higher limits
 
