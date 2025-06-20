@@ -1,8 +1,56 @@
-# ZoomEye MCP Server
+# 🚀 ZoomEye MCP Server
 
 A Model Context Protocol (MCP) server that provides network asset information based on query conditions. This server allows Large Language Models (LLMs) to obtain network asset information by querying ZoomEye using dorks and other search parameters.
 
-This MCP server integrates with AI assistants and development environments like Claude Desktop, Cursor, Windsurf, Cline, Continue, and Zed, enabling them to search for and analyze internet-connected devices, services, and vulnerabilities through natural language interactions.
+## 🔔 Announcement
+
+🎉 We are excited to announce the official open-source release of **ZoomEye MCP Server** — a powerful Model Context Protocol (MCP) server that brings real-time cyber asset intelligence to AI assistants and development environments.
+
+🎁 **Special Offer:** Try it now and follow our official Twitter [@zoomeye_team](https://x.com/zoomeye_team) to receive **7 days of free API member access**.
+
+💡 Provide insightful feedback that gets officially adopted, and you'll unlock **even more exclusive rewards**!
+
+🔧 Fully compatible with leading MCP environments:
+
+- Claude Desktop
+- Cursor
+- Windsurf
+- Cline
+- Continue
+- Zed
+
+🔗 Explore ZoomEye MCP Server on:
+
+- GitHub: [zoomeye-ai/mcp_zoomeye](https://github.com/zoomeye-ai/mcp_zoomeye)
+- MCP.so: [mcp.so/server/mcp_zoomeye](https://mcp.so/server/mcp_zoomeye/zoomeye-ai)
+- Smithery: [smithery.ai/server/@zoomeye-ai/mcp_zoomeye](https://smithery.ai/server/@zoomeye-ai/mcp_zoomeye)
+- Cursor Directory: [cursor.directory/mcp/zoomeye](https://cursor.directory/mcp/zoomeye)
+- Pulse MCP: [pulsemcp.com/servers/zoomeye](https://www.pulsemcp.com/servers/zoomeye)
+- Glama MCP: [glama.ai/mcp/servers](https://glama.ai/mcp/servers)
+
+We welcome everyone to use, explore, and contribute!
+
+## 🔑 How can I get a ZoomEye API key?
+
+To use this MCP server, you’ll need a ZoomEye API key.
+
+1. Go to https://www.zoomeye.ai
+
+2. Register or log in
+
+3. Click your avatar → **Profile**
+
+4. Copy your **API-KEY**
+
+5. Set the environment variable:
+
+   `export ZOOMEYE_API_KEY="your_api_key_here"`
+
+![zoomeye1](./zoomeye1.jpg)
+
+![zoomeye2](./zoomeye2.jpg)
+
+
 
 
 ## Features
@@ -276,7 +324,7 @@ Response:
   "code": 60000,
   "message": "success",
   "total": 163139107,
-  "query": "title=\"cisco vpn\"",
+  "query": "app=\"Apache Tomcat\"",
   "data": [
     {
       "url": "https://1.1.1.1:443",
