@@ -2,6 +2,15 @@
 
 All notable changes to the ZoomEye MCP Server will be documented in this file.
 
+## [0.1.4] - 2025-06-25
+
+### New Features
+- Added vulnerability query functionality
+- Added vulnerability search capability
+
+### Performance Improvements
+- Optimized code by converting synchronous operations to asynchronous
+
 ## [0.1.3] - 2025-03-19
 
 ### New Features
