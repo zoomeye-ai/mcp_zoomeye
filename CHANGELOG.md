@@ -2,6 +2,11 @@
 
 All notable changes to the ZoomEye MCP Server will be documented in this file.
 
+## [0.1.5] - 2025-06-27
+
+### Fixes
+- Fixed a bug in AsyncClient Proxy Parameter
+
 ## [0.1.4] - 2025-06-25
 
 ### New Features

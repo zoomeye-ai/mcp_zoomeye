@@ -2,11 +2,13 @@ import json
 import os
 from enum import Enum
 from typing import Optional, Sequence
+
+import httpx
 from dotenv import load_dotenv
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource, Prompt, PromptArgument
-import httpx
+from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
+
 from .prompts import SEARCH_SYNTAX_GUIDE
 
 load_dotenv()
@@ -61,16 +63,12 @@ class ZoomeyeService:
             self.key = os.getenv("ZOOMEYE_API_KEY")
 
     async def get_client(self):
-        proxies = None
+        proxy = None
         https_proxy = os.getenv("https_proxy")
         http_proxy = os.getenv("http_proxy")
         if https_proxy or http_proxy:
-            proxies = {}
-            if https_proxy:
-                proxies["https://"] = https_proxy
-            if http_proxy:
-                proxies["http://"] = http_proxy
-        return httpx.AsyncClient(proxies=proxies)
+            proxy = https_proxy or http_proxy
+        return httpx.AsyncClient(proxy=proxy)
 
     async def query(self, qbase64, page=1, pagesize=10, fields=None, sub_type=None, facets=None, ignore_cache=None):
         """Query ZoomEye API with the given parameters.
