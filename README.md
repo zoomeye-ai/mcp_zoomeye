@@ -65,6 +65,10 @@ To use this MCP server, you’ll need a ZoomEye API key.
 - Automatic retry mechanism for failed API requests
 - Comprehensive error handling and logging
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/zoomeye-ai-mcp-zoomeye).
+
 ## Available Tools
 
 - `zoomeye_search` - Get network asset information based on query conditions.
