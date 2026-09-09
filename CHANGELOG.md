@@ -2,6 +2,13 @@
 
 All notable changes to the ZoomEye MCP Server will be documented in this file.
 
+## [0.1.6] - 2026-09-09
+
+### Fixes
+- Restricted the MCP Python SDK to the compatible 1.x release line
+- Added the missing direct `httpx` dependency
+- Fixed installation on Intel macOS by selecting a `cryptography` release with a compatible binary wheel
+
 ## [0.1.5] - 2025-06-27
 
 ### Fixes
